@@ -9,7 +9,8 @@ function fetch() {
 }
 
 class Orbitals2d extends React.Component {
-  componentDidMount() {
+
+  componentDidMount = () => {
     const {query, transformDocument, attractorColor} = this.props
     initializeWorld({elementId, attractorColor})
     fetch(query).then(documents => {
@@ -20,7 +21,7 @@ class Orbitals2d extends React.Component {
     })
   }
 
-  render() {
+  render = () => {
     return <div id={elementId} className={styles.container} />
   }
 }
