@@ -20,7 +20,7 @@ function textSizeToMass(text) {
 }
 
 function massToRadius(mass) {
-  return mass * 40
+  return mass * 30
 }
 
 function blocksToText(blocks, opts = {}) {
