@@ -1,6 +1,6 @@
 import Matter from 'matter-js'
 import MatterAttractors from 'matter-attractors'
-const {Engine, Events, Runner, Render, World, Body, Mouse, MouseConstraint, Common, Bodies} = Matter
+const {Engine, Runner, Render, World, Body, Mouse, MouseConstraint, Bodies} = Matter
 
 Matter.use(MatterAttractors)
 
@@ -44,7 +44,7 @@ const initializeWorld = options => {
       },
       plugin: {
         attractors: [
-          function(bodyA, bodyB) {
+          function (bodyA, bodyB) {
             return {
               x: (bodyA.position.x - bodyB.position.x) * 1e-6,
               y: (bodyA.position.y - bodyB.position.y) * 1e-6
@@ -75,11 +75,7 @@ const initializeWorld = options => {
 const addBody = options => {
   const {mass, radius, render, percentDistanceFromCenter, canCollide} = options
   const offsetFromLeftEdge = 50
-  const positionX =
-    ((attractiveBody.position.x - attractiveBody.circleRadius - radius - offsetFromLeftEdge) *
-      percentDistanceFromCenter) /
-      100 +
-    offsetFromLeftEdge
+  const positionX = ((attractiveBody.position.x - attractiveBody.circleRadius - radius - offsetFromLeftEdge) * percentDistanceFromCenter) / (100 + offsetFromLeftEdge)
 
   const positionY = globalRender.options.height / 2
   const distanceX = attractiveBody.position.x - positionX
@@ -94,7 +90,7 @@ const addBody = options => {
       fillStyle: defaultParticleColor
     }
   }
-  var body = Bodies.circle(positionX, positionY, radius, bodyOptions)
+  const body = Bodies.circle(positionX, positionY, radius, bodyOptions)
 
   World.add(world, body)
   Body.applyForce(body, body.position, {x: 0, y: velocity})
