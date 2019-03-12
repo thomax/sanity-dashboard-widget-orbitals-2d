@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {getFeed} from './sanityConnector'
+import sanityConnector from './sanityConnector'
 import styles from './Orbitals2d.css'
 import {initializeWorld, addBody} from './generator'
 const elementId = 'orbitals2dWorld'
@@ -34,7 +34,7 @@ class Orbitals2d extends React.Component {
     initializeWorld({elementId, attractorColor})
 
     this.unsubscribe()
-    this.subscription = getFeed(query).subscribe(response => this.addOrbitals(response.items)
+    this.subscription = sanityConnector.getFeed(query).subscribe(response => this.addOrbitals(response.items)
     )
   }
 
