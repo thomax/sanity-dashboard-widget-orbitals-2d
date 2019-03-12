@@ -34,13 +34,16 @@ class Orbitals2d extends React.Component {
     initializeWorld({elementId, attractorColor})
 
     this.unsubscribe()
-    this.subscription = sanityConnector.getFeed(query).subscribe(response => this.addOrbitals(response.items)
-    )
+    this.subscription = sanityConnector.getFeed(query).subscribe(response => {
+      console.log('stream', response)
+      this.addOrbitals(response)
+    })
   }
 
-  addOrbitals(documents) {
+  addOrbitals = (documents = []) => {
     const {transformDocument} = this.props
     documents.forEach(doc => {
+      console.log('want to add', doc)
       const bodyOptions = transformDocument(doc)
       addBody(bodyOptions)
     })
