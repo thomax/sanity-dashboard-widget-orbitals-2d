@@ -43,7 +43,6 @@ class Orbitals2d extends React.Component {
   addOrbitals = (documents = []) => {
     const {transformDocument} = this.props
     documents.forEach(doc => {
-      console.log('want to add', doc)
       const bodyOptions = transformDocument(doc)
       addBody(bodyOptions)
     })
