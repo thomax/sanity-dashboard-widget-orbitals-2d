@@ -16,7 +16,6 @@ const defaultParticleColor = '#212248'
 const orbitalDirection = -1
 let globalRender = null
 let attractiveBody
-const orbitals = {}
 
 const initializeWorld = options => {
   const {elementId, attractorColor} = options
@@ -73,14 +72,12 @@ const initializeWorld = options => {
   globalRender.mouse = mouse
 }
 
+const removeBody = body => {
+  World.remove(world, body)
+}
+
 const addBody = options => {
-  const {id, mass, radius, render, percentDistanceFromCenter, solid, sides, frictionAir} = options
-  if (!id) {
-    console.warn("Got body without id. Won't be able to remove it. Ever.")
-  }
-  if (orbitals[id]) {
-    World.remove(world, orbitals[id])
-  }
+  const {mass, radius, render, percentDistanceFromCenter, solid, sides, frictionAir} = options
 
   const offsetFromLeftEdge = 50
   const positionX = ((attractiveBody.position.x - attractiveBody.circleRadius - radius - offsetFromLeftEdge) * percentDistanceFromCenter) / (100 + offsetFromLeftEdge)
@@ -102,10 +99,9 @@ const addBody = options => {
     ? Bodies.polygon(positionX, positionY, sides, radius, bodyOptions)
     : Bodies.circle(positionX, positionY, radius, bodyOptions)
 
-  orbitals[id] = body
-
   World.add(world, body)
   Body.applyForce(body, body.position, {x: 0, y: velocity})
+  return body
 }
 
 function velocityByDistance(distance, mass) {
@@ -114,5 +110,6 @@ function velocityByDistance(distance, mass) {
 
 module.exports = {
   initializeWorld,
+  removeBody,
   addBody
 }

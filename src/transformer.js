@@ -16,16 +16,15 @@ function getColor(key) {
 
 // the heavier, the larger
 function massToRadius(mass) {
-  return mass * 20
+  return mass * 15
 }
 
 const defaultTransformDocument = doc => {
-  const {_type, _id} = doc
+  const {_type} = doc
   const mass = randomIntFromInterval(0.2, 2)
   const radius = massToRadius(mass)
 
   return {
-    id: _id,
     radius: radius,
     mass: mass,
     solid: false,

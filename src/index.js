@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {getFeed} from './sanityConnector'
 import styles from './Orbitals2d.css'
-import {initializeWorld, addBody} from './generator'
+import {initializeWorld, addBody, removeBody} from './generator'
 import {defaultTransformDocument} from './transformer'
 const elementId = 'orbitals2dWorld'
 
+const orbitals = {}
 
 class Orbitals2d extends React.Component {
 
@@ -43,8 +44,13 @@ class Orbitals2d extends React.Component {
   }
 
   addOrbital = (doc = {}) => {
+    let orbital = orbitals[doc._id]
+    if (orbital) {
+      removeBody(orbital)
+    }
     const bodyOptions = this.props.transformDocument(doc)
-    addBody(bodyOptions)
+    orbital = addBody(bodyOptions)
+    orbitals[doc._id] = orbital
   }
 
   render = () => {
