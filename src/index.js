@@ -32,7 +32,6 @@ class Orbitals2d extends React.Component {
 
     this.unsubscribe()
     this.subscription = getFeed(query).subscribe(event => {
-      console.log('event', event)
       this.addOrbital(event.result)
     })
   }
@@ -44,13 +43,17 @@ class Orbitals2d extends React.Component {
   }
 
   addOrbital = (doc = {}) => {
-    let orbital = orbitals[doc._id]
-    if (orbital) {
-      removeBody(orbital)
+    const existingOrbital = orbitals[doc._id]
+    if (existingOrbital) {
+      console.log('remove', doc._id)
+      removeBody(existingOrbital)
     }
     const bodyOptions = this.props.transformDocument(doc)
-    orbital = addBody(bodyOptions)
-    orbitals[doc._id] = orbital
+    if (bodyOptions) {
+      console.log('add', doc._id)
+      const newOrbital = addBody(bodyOptions)
+      orbitals[doc._id] = newOrbital
+    }
   }
 
   render = () => {
