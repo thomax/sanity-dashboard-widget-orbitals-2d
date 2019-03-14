@@ -30,9 +30,9 @@ class Orbitals2d extends React.Component {
     initializeWorld({elementId, attractorColor})
 
     this.unsubscribe()
-    this.subscription = getFeed(query).subscribe(response => {
-      console.log('stream', response)
-      this.addOrbitals(response)
+    this.subscription = getFeed(query).subscribe(event => {
+      console.log('event', event)
+      this.addOrbital(event.result)
     })
   }
 
@@ -42,13 +42,9 @@ class Orbitals2d extends React.Component {
     }
   }
 
-  addOrbitals = (incoming = []) => {
-    const documents = Array.isArray(incoming) ? incoming : [incoming]
-    const {transformDocument} = this.props
-    documents.forEach(doc => {
-      const bodyOptions = transformDocument(doc)
-      addBody(bodyOptions)
-    })
+  addOrbital = (doc = {}) => {
+    const bodyOptions = this.props.transformDocument(doc)
+    addBody(bodyOptions)
   }
 
   render = () => {
