@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-dashboard-widget-orbitals-2d",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "author": "Thomas Drevon <thomas@sanity.io>",
   "description": "Dashboard widget for Sanity Content Studio",
   "homepage": "https://github.com/thomax/sanity-dashboard-widget-orbitals-2d#readme",
@@ -42,6 +42,7 @@
     "react": "^16"
   },
   "dependencies": {
+    "await-sleep": "0.0.1",
     "get-it": "^4.1.4",
     "matter-attractors": "^0.1.6",
     "matter-js": "^0.14.2",

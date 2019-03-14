@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import sleep from 'await-sleep'
 import {getFeed} from './sanityConnector'
 import styles from './Orbitals2d.css'
 import {initializeWorld, addBody, removeBody} from './generator'
@@ -42,11 +43,12 @@ class Orbitals2d extends React.Component {
     }
   }
 
-  addOrbital = (doc = {}) => {
+  addOrbital = async (doc = {}) => {
     const existingOrbital = orbitals[doc._id]
     if (existingOrbital) {
       console.log('remove', doc._id)
       removeBody(existingOrbital)
+      await sleep(1000)
     }
     const bodyOptions = this.props.transformDocument(doc)
     if (bodyOptions) {
@@ -54,6 +56,7 @@ class Orbitals2d extends React.Component {
       const newOrbital = addBody(bodyOptions)
       orbitals[doc._id] = newOrbital
     }
+    console.log('There are now', Object.keys(orbitals).length)
   }
 
   render = () => {
