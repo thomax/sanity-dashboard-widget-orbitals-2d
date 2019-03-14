@@ -73,7 +73,7 @@ const initializeWorld = options => {
 }
 
 const addBody = options => {
-  const {mass, radius, render, percentDistanceFromCenter, solid, sides} = options
+  const {mass, radius, render, percentDistanceFromCenter, solid, sides, frictionAir} = options
   const offsetFromLeftEdge = 50
   const positionX = ((attractiveBody.position.x - attractiveBody.circleRadius - radius - offsetFromLeftEdge) * percentDistanceFromCenter) / (100 + offsetFromLeftEdge)
 
@@ -83,7 +83,7 @@ const addBody = options => {
 
   const bodyOptions = {
     isSensor: !solid, // enable/disable collisions
-    frictionAir: 0.0,
+    frictionAir: frictionAir || 0.0,
     mass: mass,
     render: render || {
       opacity: 1,

@@ -14,9 +14,9 @@ function getColor(key) {
   return colors[key]
 }
 
-// the bigger, the larger
+// the heavier, the larger
 function massToRadius(mass) {
-  return mass * 30
+  return mass * 20
 }
 
 const defaultTransformDocument = doc => {
