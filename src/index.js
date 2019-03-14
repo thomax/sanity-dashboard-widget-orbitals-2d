@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import sanityConnector from './sanityConnector'
+import {getFeed} from './sanityConnector'
 import styles from './Orbitals2d.css'
 import {initializeWorld, addBody} from './generator'
+import {defaultTransformDocument} from './transformer'
 const elementId = 'orbitals2dWorld'
 
 
@@ -10,23 +11,18 @@ class Orbitals2d extends React.Component {
 
   static propTypes = {
     query: PropTypes.string,
-    transformDocument: PropTypes.func.isRequired,
+    transformDocument: PropTypes.func,
     attractorColor: PropTypes.string
   }
 
   static defaultProps = {
-    query: '*[]|order(_createdAt desc)[0..10]',
-    attractorColor: '#606060'
+    query: '*[]|order(_createdAt desc)[0..5]',
+    attractorColor: '#606060',
+    transformDocument: defaultTransformDocument
   }
 
   componentWillUnmount() {
     this.unsubscribe()
-  }
-
-  unsubscribe() {
-    if (this.subscription) {
-      this.subscription.unsubscribe()
-    }
   }
 
   componentDidMount = () => {
@@ -34,10 +30,16 @@ class Orbitals2d extends React.Component {
     initializeWorld({elementId, attractorColor})
 
     this.unsubscribe()
-    this.subscription = sanityConnector.getFeed(query).subscribe(response => {
+    this.subscription = getFeed(query).subscribe(response => {
       console.log('stream', response)
       this.addOrbitals(response)
     })
+  }
+
+  unsubscribe() {
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
   }
 
   addOrbitals = (documents = []) => {

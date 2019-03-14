@@ -1,5 +1,4 @@
 import randomColor from 'randomcolor'
-const defaults = {nonTextBehavior: 'remove'}
 
 const colors = {}
 
@@ -15,46 +14,29 @@ function getColor(key) {
   return colors[key]
 }
 
-function textSizeToMass(text) {
-  return text.length / 400 // text is usually between 80 and 160
-}
-
+// the bigger, the larger
 function massToRadius(mass) {
   return mass * 30
 }
 
-function blocksToText(blocks, opts = {}) {
-  const options = Object.assign({}, defaults, opts)
-  return blocks
-    .map(block => {
-      if (block._type !== 'block' || !block.children) {
-        return options.nonTextBehavior === 'remove' ? '' : `[${block._type} block]`
-      }
-
-      return block.children.map(child => child.text).join('')
-    })
-    .join('\n\n')
-}
-
-const transformDocument = doc => {
-  const {_createdAt, greetingTypeLabel, body} = doc
-  const plainText = blocksToText(body)
-  const mass = textSizeToMass(blocksToText(body))
+const defaultTransformDocument = doc => {
+  const {_type} = doc
+  const mass = randomIntFromInterval(0.2, 2)
   const radius = massToRadius(mass)
-  const diam = radius * 2
 
   return {
     radius: radius,
     mass: mass,
-    canCollide: false,
-    percentDistanceFromCenter: randomIntFromInterval(0, 100),
+    solid: false,
+    percentDistanceFromCenter: randomIntFromInterval(20, 90),
+    sides: randomIntFromInterval(0, 7),
     render: {
-      fillStyle: getColor(greetingTypeLabel),
+      fillStyle: getColor(_type),
       opacity: 0.7
     }
   }
 }
 
 module.exports = {
-  transformDocument
+  defaultTransformDocument
 }
