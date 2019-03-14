@@ -5,8 +5,8 @@ import {getFeed} from './sanityConnector'
 import styles from './Orbitals2d.css'
 import {initializeWorld, addBody, removeBody} from './generator'
 import {defaultTransformDocument} from './transformer'
-const elementId = 'orbitals2dWorld'
 
+const elementId = 'orbitals2dWorld'
 const orbitals = {}
 
 class Orbitals2d extends React.Component {
@@ -14,13 +14,15 @@ class Orbitals2d extends React.Component {
   static propTypes = {
     query: PropTypes.string,
     transformDocument: PropTypes.func,
-    attractorColor: PropTypes.string
+    attractorColor: PropTypes.string,
+    attractorSize: PropTypes.number
   }
 
   static defaultProps = {
     query: '*[]|order(_createdAt desc)[0..5]',
+    transformDocument: defaultTransformDocument,
     attractorColor: '#606060',
-    transformDocument: defaultTransformDocument
+    attractorSize: 30
   }
 
   componentWillUnmount() {
@@ -28,8 +30,8 @@ class Orbitals2d extends React.Component {
   }
 
   componentDidMount = () => {
-    const {query, attractorColor} = this.props
-    initializeWorld({elementId, attractorColor})
+    const {query, attractorColor, attractorSize} = this.props
+    initializeWorld({elementId, attractorColor, attractorSize})
 
     this.unsubscribe()
     this.subscription = getFeed(query).subscribe(event => {
@@ -46,13 +48,12 @@ class Orbitals2d extends React.Component {
   addOrbital = async (doc = {}) => {
     const existingOrbital = orbitals[doc._id]
     if (existingOrbital) {
-      console.log('remove', doc._id)
       removeBody(existingOrbital)
       await sleep(1000)
     }
+
     const bodyOptions = this.props.transformDocument(doc)
     if (bodyOptions) {
-      console.log('add', doc._id)
       const newOrbital = addBody(bodyOptions)
       orbitals[doc._id] = newOrbital
     }

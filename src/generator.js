@@ -18,7 +18,7 @@ let globalRender = null
 let attractiveBody
 
 const initializeWorld = options => {
-  const {elementId, attractorColor} = options
+  const {elementId, attractorColor, attractorSize} = options
   globalRender = Render.create({
     element: document.getElementById(elementId),
     engine: engine,
@@ -36,7 +36,7 @@ const initializeWorld = options => {
   attractiveBody = Bodies.circle(
     globalRender.options.width / 2,
     globalRender.options.height / 2,
-    35,
+    attractorSize,
     {
       isStatic: true,
       render: {
