@@ -10,8 +10,14 @@ A GROQ query string
 ### `attractorColor`
 CSS color of the attractor body in the middle
 
-### `attractorSize`
-Size inpixels of the attractor body in the middle
+### `attractorRadius`
+Radius in pixels of the attractor body
+
+### `attractorOpacity`
+Opacity (a value between 0 and 1) of the attractor body
+
+### `attractorSides`
+Number of sides of the attractor body polygon (6 -> hexagon)
 
 ### `transformDocument`
 A function which transforms a Sanity document into an object shaped like this:

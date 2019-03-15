@@ -7,6 +7,7 @@ import {initializeWorld, addBody, removeBody} from './generator'
 import {defaultTransformDocument} from './transformer'
 
 const elementId = 'orbitals2dWorld'
+const gracePeriodOnBodyRemoval = 1500
 const orbitals = {}
 
 class Orbitals2d extends React.Component {
@@ -15,14 +16,18 @@ class Orbitals2d extends React.Component {
     query: PropTypes.string,
     transformDocument: PropTypes.func,
     attractorColor: PropTypes.string,
-    attractorSize: PropTypes.number
+    attractorRadius: PropTypes.number,
+    attractorOpacity: PropTypes.number,
+    attractorSides: PropTypes.number
   }
 
   static defaultProps = {
     query: '*[]|order(_createdAt desc)[0..5]',
     transformDocument: defaultTransformDocument,
     attractorColor: '#606060',
-    attractorSize: 30
+    attractorRadius: 20,
+    attractorOpacity: null,
+    attractorSides: 0
   }
 
   componentWillUnmount() {
@@ -30,8 +35,8 @@ class Orbitals2d extends React.Component {
   }
 
   componentDidMount = () => {
-    const {query, attractorColor, attractorSize} = this.props
-    initializeWorld({elementId, attractorColor, attractorSize})
+    const {query, attractorColor, attractorOpacity, attractorRadius, attractorSides} = this.props
+    initializeWorld({elementId, attractorColor, attractorOpacity, attractorRadius, attractorSides})
 
     this.unsubscribe()
     this.subscription = getFeed(query).subscribe(event => {
@@ -49,7 +54,7 @@ class Orbitals2d extends React.Component {
     const existingOrbital = orbitals[doc._id]
     if (existingOrbital) {
       removeBody(existingOrbital)
-      await sleep(1000)
+      await sleep(gracePeriodOnBodyRemoval)
     }
 
     const bodyOptions = this.props.transformDocument(doc)

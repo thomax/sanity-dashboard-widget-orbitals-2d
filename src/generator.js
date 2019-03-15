@@ -10,15 +10,21 @@ const world = engine.world
 world.bodies = []
 world.gravity.scale = 0
 Runner.run(runner, engine)
-const defaultAttractorColor = '#112248'
 const defaultParticleColor = '#212248'
+const defaultAttractorColor = '#112248'
+const defaultAttractorOpacity = 1
+const defaultAttractorRadius = 20
+const defaultAttractorSides = 1
 
 const orbitalDirection = -1
 let globalRender = null
 let attractiveBody
 
 const initializeWorld = options => {
-  const {elementId, attractorColor, attractorSize} = options
+  const {elementId, attractorColor, attractorOpacity, attractorRadius, attractorSides} = options
+  const sides = attractorSides || defaultAttractorSides
+  const radius = attractorRadius || defaultAttractorRadius
+
   globalRender = Render.create({
     element: document.getElementById(elementId),
     engine: engine,
@@ -32,28 +38,29 @@ const initializeWorld = options => {
 
   Render.run(globalRender)
 
-  // create attractor
-  attractiveBody = Bodies.circle(
-    globalRender.options.width / 2,
-    globalRender.options.height / 2,
-    attractorSize,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: attractorColor || defaultAttractorColor
-      },
-      plugin: {
-        attractors: [
-          function (bodyA, bodyB) {
-            return {
-              x: (bodyA.position.x - bodyB.position.x) * 1e-6,
-              y: (bodyA.position.y - bodyB.position.y) * 1e-6
-            }
+  const attractorBodyOptions = {
+    isStatic: true,
+    render: {
+      fillStyle: attractorColor || defaultAttractorColor,
+      opacity: attractorOpacity || defaultAttractorOpacity
+    },
+    plugin: {
+      attractors: [
+        function (bodyA, bodyB) {
+          return {
+            x: (bodyA.position.x - bodyB.position.x) * 1e-6,
+            y: (bodyA.position.y - bodyB.position.y) * 1e-6
           }
-        ]
-      }
+        }
+      ]
     }
-  )
+  }
+
+  // create attractor
+  attractiveBody = (sides && sides > 2)
+    ? Bodies.polygon(globalRender.options.width / 2, globalRender.options.height / 2, sides, radius, attractorBodyOptions)
+    : Bodies.circle(globalRender.options.width / 2, globalRender.options.height / 2, radius, attractorBodyOptions)
+
 
   World.add(world, attractiveBody)
 
@@ -91,7 +98,7 @@ const addBody = options => {
     frictionAir: frictionAir || 0.0,
     mass: mass,
     render: render || {
-      opacity: 1,
+      opacity: 0.7,
       fillStyle: defaultParticleColor
     }
   }
