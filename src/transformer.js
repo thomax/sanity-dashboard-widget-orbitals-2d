@@ -21,6 +21,9 @@ function massToRadius(mass) {
 
 const defaultTransformDocument = doc => {
   const {_type} = doc
+  if (!_type) {
+    return null
+  }
   const mass = randomIntFromInterval(0.2, 2)
   const radius = massToRadius(mass)
 

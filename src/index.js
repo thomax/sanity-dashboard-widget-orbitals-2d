@@ -22,7 +22,7 @@ class Orbitals2d extends React.Component {
   }
 
   static defaultProps = {
-    query: '*[]|order(_createdAt desc)[0..5]',
+    query: '*[!(_id in path("_.listeners.**"))]|order(_createdAt desc)[0..5]',
     transformDocument: defaultTransformDocument,
     attractorColor: '#606060',
     attractorRadius: 20,
